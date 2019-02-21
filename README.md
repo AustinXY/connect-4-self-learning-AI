@@ -84,6 +84,7 @@ temp = Integer.parseInt(st.nextToken()) +
        ThreadLocalRandom.current().nextInt(-5 * (unbeatenRun+1), 5 * (unbeatenRun+1) + 1);
 ```
 We call two configurations close when the vectors are close. i.e.
+
 dist((x_1,x_2,...,x_n), (y_1,y_2,...,y_n)) = (\sum_{i=0}^{n}(x_i-y_i)^2)^\frac{1}{2}
 
 
