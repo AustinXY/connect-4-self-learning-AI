@@ -85,7 +85,7 @@ temp = Integer.parseInt(st.nextToken()) +
 ```
 We call two configurations close when the vectors are close. i.e.
 
-![dist((x_1,x_2,...,x_n), (y_1,y_2,...,y_n)) = (\sum_{i=0}^{n}(x_i-y_i)^2)^\frac{1}{2}](http://www.sciweavers.org/tex2img.php?eq=dist%28%28x_1%2Cx_2%2C...%2Cx_n%29%2C%20%28y_1%2Cy_2%2C...%2Cy_n%29%29%20%3D%20%28%5Csum_%7Bi%3D0%7D%5E%7Bn%7D%28x_i-y_i%29%5E2%29%5E%5Cfrac%7B1%7D%7B2%7D&bc=White&fc=Black&im=jpg&fs=12&ff=arev&edit=0)
+<img src="http://www.sciweavers.org/tex2img.php?eq=dist%28%28x_1%2Cx_2%2C...%2Cx_n%29%2C%20%28y_1%2Cy_2%2C...%2Cy_n%29%29%20%3D%20%28%5Csum_%7Bi%3D0%7D%5E%7Bn%7D%28x_i-y_i%29%5E2%29%5E%5Cfrac%7B1%7D%7B2%7D&bc=White&fc=Black&im=jpg&fs=12&ff=arev&edit=0" align="center" border="0" alt="dist((x_1,x_2,...,x_n), (y_1,y_2,...,y_n)) = (\sum_{i=0}^{n}(x_i-y_i)^2)^\frac{1}{2}" width="425" height="50" />
 
 
 Everytime the primary config gets updated, we start mutating the config to configs that're closer to it, and gradually increase the distance. We do this to try to make the configuration converge to some local optimal, then try to from there reach some even better configs.
