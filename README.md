@@ -90,7 +90,7 @@ We call two configurations close when the vectors are close. i.e.
 
 Everytime the primary config gets updated, we start mutating the config to configs that're closer to it, and gradually increase the distance. We do this to try to make the configuration converge to some local optimal, then try to from there reach some even better configs.
 
-## Copy Right
+## Copyright
 <p style="text-align: left;">
 The <b>MonteCarloAI.java</b>, <b>StupidAI.java</b>, <b>RandomAI.java</b>, <b>IOModule.java</b>, <b>GameState_Opt7x6.java</b>, <b>GameController.java</b>, <b>Display.java</b>, <b>TextDisplay.java</b>, <b>AIModule.java</b> are distributed by Ian Davidson at UCDavis.
 </p>
