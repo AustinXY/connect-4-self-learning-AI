@@ -85,7 +85,8 @@ temp = Integer.parseInt(st.nextToken()) +
 ```
 We call two configurations close when the vectors are close. i.e.
 
-$dist((x_1,x_2,...,x_n), (y_1,y_2,...,y_n)) = (\sum_{i=0}^{n}(x_i-y_i)^2)^\frac{1}{2}$
+<img src="https://latex.codecogs.com/gif.latex?
+dist((x_1,x_2,...,x_n), (y_1,y_2,...,y_n)) = (\sum_{i=0}^{n}(x_i-y_i)^2)^\frac{1}{2}" />
 
 Everytime the primary config gets updated, we start mutating the config to configs that're closer to it, and gradually increase the distance. We do this to try to make the configuration converge to some local optimal, then try to from there reach some even better configs.
 
