@@ -9,7 +9,7 @@ public class Main
 {
     public static void main(String[] args)
     {
-        int temp, win, lose, draw, losingstreak = 0, unbeatenRun = 0, filenum = 0;
+        int temp, losingstreak = 0, unbeatenRun = 0, filenum = 0;
         int numparameters = 6;
         AIModule[] players = new AIModule[2];
         GameController controller;
@@ -17,6 +17,8 @@ public class Main
         GameState_Opt7x6 game;
         IOModule io;
         boolean train = false;
+        boolean keep; // whether to keep parent config
+        boolean draw;
 
         String filename, path = "/Users/austin/Desktop/c4_self_learning/";
         String parentFilename = "Primaryconfig.csv";
@@ -136,10 +138,6 @@ public class Main
                 }
             } // if 100 gen unbeaten or 10 gen losing
 
-            win = 0;
-            lose = 0;
-            draw = 0;
-
             try {
                 inf = new FileReader(parentFilename);
                 BufferedReader br = new BufferedReader(inf);
@@ -172,49 +170,30 @@ public class Main
                 System.exit(-1);
             }
 
-            players[0] = new C4AI(parentFilename, 0);
-            players[1] = new C4AI(mutationFilename, 1);
-            game = new GameState_Opt7x6();
-            io = new TextDisplay();
-            controller = new GameController(game, io, players, AI_time);
-            controller.play();
-            if(game.getWinner() != 0) {
-                if (game.getWinner() == 1) {
-                    win++;
-                } else {
-                    lose++;
+            keep = false;
+            draw = false;
+            for (int i = 0; i < 2; i++) {
+                players[i] = new C4AI(parentFilename, i);
+                players[i^1] = new C4AI(parentFilename, i^1);
+                game = new GameState_Opt7x6();
+                io = new TextDisplay();
+                controller = new GameController(game, io, players, AI_time);
+                controller.play();
+                if (game.getWinner() != 0 && game.getWinner() == 1) {
+                    keep = true;
+                    break;
+                } else if (i == 0 && game.getWinner() == 0) {
+                    draw = true;
                 }
-            } else {
-                draw++;
-            }
 
-            players[1] = new C4AI(parentFilename, 1);
-            players[0] = new C4AI(mutationFilename, 0);
-            game = new GameState_Opt7x6();
-            io = new TextDisplay();
-            controller = new GameController(game, io, players, AI_time);
-            controller.play();
-            if (game.getWinner() != 0) {
-                if (game.getWinner() == 2) {
-                    win++;
-                } else {
-                    lose++;
+                if (i == 1 && draw == true) {
+                    keep = true;
                 }
-            } else {
-                draw++;
             }
 
             System.out.println();
             System.out.println("**************************************************");
-            System.out.print("win: ");
-            System.out.println(win);
-            System.out.print("lose: ");
-            System.out.println(lose);
-            System.out.print("draw: ");
-            System.out.println(draw);
-            unbeatenRun++;
-
-            if (win < lose) {
+            if (!keep) {
                 unbeatenRun = 0;
                 losingstreak++;
                 try {
@@ -239,19 +218,20 @@ public class Main
                     writer.write(String.join(",", weight));
                     writer.close();
                     outf.close();
+                    System.out.println("Switched...");
                 } catch (IOException e3) {
                     System.err.println("file write error");
                     System.exit(-1);
                 }
+                if (losingstreak >= 2) {
+                    System.out.print("Losing streak: ");
+                    System.out.println(losingstreak);
+                }
             } else {
+                unbeatenRun++;
                 losingstreak = 0;
-            }
-
-            if (losingstreak > 0) {
-                System.out.print("losing streak: ");
-                System.out.println(losingstreak);
-            } else {
-                System.out.print("unbeatenRun: ");
+                System.out.println("Keeping...");
+                System.out.print("Unbeaten run: ");
                 System.out.println(unbeatenRun);
             }
         }
