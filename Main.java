@@ -9,7 +9,7 @@ public class Main
 {
     public static void main(String[] args)
     {
-        int temp, win, lose, draw, unbeatenRun = 0, filenum = 0;
+        int temp, win, lose, draw, losingstreak = 0, unbeatenRun = 0, filenum = 0;
         int numparameters = 6;
         AIModule[] players = new AIModule[2];
         GameController controller;
@@ -105,19 +105,23 @@ public class Main
         FileWriter outf;
         String weight[] = new String[6];
         while (true) {
-            if (unbeatenRun >= 100) {
-                unbeatenRun = 0;
-                filename = "archivedconfig" + Integer.toString(++filenum) + ".csv";
-                try {
-                    Files.copy(new File(path + parentFilename).toPath(),
-                        new File(path + filename).toPath(), StandardCopyOption.REPLACE_EXISTING);
-                } catch (IOException ioe) {
-                    System.err.println("error copy file");
-                    System.exit(-1);
-                }
+            if (unbeatenRun >= 100 || losingstreak >= 10) {
+                if (unbeatenRun >= 100) {
+                    unbeatenRun = 0;
+                    filename = "archivedconfig" + Integer.toString(++filenum) + ".csv";
+                    try {
+                        Files.copy(new File(path + parentFilename).toPath(),
+                            new File(path + filename).toPath(), StandardCopyOption.REPLACE_EXISTING);
+                    } catch (IOException ioe) {
+                        System.err.println("error copy file");
+                        System.exit(-1);
+                    }
 
-                for (int i = 0; i < numparameters; i++) {
-                    weight[i] = Integer.toString(ThreadLocalRandom.current().nextInt(-1000, 1000));
+                    for (int i = 0; i < numparameters; i++) {
+                        weight[i] = Integer.toString(ThreadLocalRandom.current().nextInt(-1000, 1000));
+                    }
+                } else {
+                    losingstreak = 0;
                 }
 
                 try {
@@ -130,7 +134,7 @@ public class Main
                     System.err.println("file write error");
                     System.exit(-1);
                 }
-            } // if 100 generations unbeaten
+            } // if 100 gen unbeaten or 10 gen losing
 
             win = 0;
             lose = 0;
@@ -212,6 +216,7 @@ public class Main
 
             if (win < lose) {
                 unbeatenRun = 0;
+                losingstreak++;
                 try {
                     inf = new FileReader(mutationFilename);
                     BufferedReader br = new BufferedReader(inf);
@@ -238,10 +243,17 @@ public class Main
                     System.err.println("file write error");
                     System.exit(-1);
                 }
+            } else {
+                losingstreak = 0;
             }
 
-            System.out.print("unbeatenRun: ");
-            System.out.println(unbeatenRun);
+            if (losingstreak > 0) {
+                System.out.print("losing streak: ");
+                System.out.println(losingstreak);
+            } else {
+                System.out.print("unbeatenRun: ");
+                System.out.println(unbeatenRun);
+            }
         }
     }
 }
