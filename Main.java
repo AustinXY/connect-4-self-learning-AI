@@ -13,7 +13,7 @@ public class Main
         int numparameters = 6;
         AIModule[] players = new AIModule[2];
         GameController controller;
-        int AI_time = 500;
+        int AI_time = 1000;
         GameState_Opt7x6 game;
         IOModule io;
         boolean train = false;
