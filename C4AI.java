@@ -54,10 +54,10 @@ public class C4AI extends AIModule {
         deepestReachedLevel = 0;
         while (!terminate) {
             minimax(state);
-            depth += (int)Math.pow(2, ++iteration);
             if (deepestReachedLevel < depth) {
                 break;
             }
+            depth += (int)Math.pow(2, ++iteration);
         }
 
         if (chosenMove == -1) {
