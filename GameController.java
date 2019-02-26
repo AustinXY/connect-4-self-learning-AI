@@ -102,8 +102,8 @@ public final class GameController
 			ai.terminate = true;
 			if(t.isAlive())
 			{
-				// Allow 100ms margin before throwing the exception
-				t.join(100);
+				// Allow 200ms margin before throwing the exception
+				t.join(200);
 				if(t.isAlive())
 					throw new RuntimeException(AIName + " did not terminate when told to do so.");
 			}
