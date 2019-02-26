@@ -1,6 +1,6 @@
 # connect-4-self-learning-AI
 
-There are four connect four AIs you can play with. StupidAI, RandomAI, MonteCarloAI and C4AI. C4AI is our implementation of connect four AI.<br />
+There are four connect four AIs you can play with. StupidAI, RandomAI, MonteCarloAI and C4AI. C4AI is my implementation of connect four AI.<br />
 ## Usage
 * `javac *.java`<br />
 Compile.
