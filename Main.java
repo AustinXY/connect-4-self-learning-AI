@@ -174,7 +174,7 @@ public class Main
             draw = false;
             for (int i = 0; i < 2; i++) {
                 players[i] = new C4AI(parentFilename, i);
-                players[i^1] = new C4AI(parentFilename, i^1);
+                players[i^1] = new C4AI(mutationFilename, i^1);
                 game = new GameState_Opt7x6();
                 io = new TextDisplay();
                 controller = new GameController(game, io, players, AI_time);
