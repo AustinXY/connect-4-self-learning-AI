@@ -13,7 +13,7 @@ public class Main
         int numparameters = 6;
         AIModule[] players = new AIModule[2];
         GameController controller;
-        int AI_time = 1000;
+        int AI_time = 500;
         GameState_Opt7x6 game;
         IOModule io;
         boolean train = false;
@@ -107,7 +107,7 @@ public class Main
         FileWriter outf;
         String weight[] = new String[6];
         while (true) {
-            if (unbeatenRun >= 100 || losingstreak >= 10) {
+            if (unbeatenRun >= 100 || losingstreak >= 50) {
                 if (unbeatenRun >= 100) {
                     unbeatenRun = 0;
                     filename = "archivedconfig" + Integer.toString(++filenum) + ".csv";
