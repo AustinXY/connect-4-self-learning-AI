@@ -179,7 +179,7 @@ public class Main
                 io = new TextDisplay();
                 controller = new GameController(game, io, players, AI_time);
                 controller.play();
-                if (game.getWinner() != 0 && game.getWinner() == 1) {
+                if (game.getWinner() != 0 && game.getWinner() == i+1) {
                     keep = true;
                     break;
                 } else if (i == 0 && game.getWinner() == 0) {
