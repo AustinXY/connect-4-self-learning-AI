@@ -10,6 +10,7 @@ public class C4AI extends AIModule {
     private int lastChosen;
     private int rollback;
     private int depth;
+    private int reachedBottom;
     private final static long TOP = 0x1020408102040L;
     // terminate if reached bottom of tree
     private boolean atBottomOfTree;
@@ -49,10 +50,10 @@ public class C4AI extends AIModule {
     public void getNextMove(final GameState_Opt7x6 state) {
         double iteration = 0;
         boardCache.clear();
-        atBottomOfTree = false;
         depth = 9;
         chosenMove = -1;
-        while (!terminate && !atBottomOfTree) {
+        while (!terminate && !(reachedBottom == 6)) {
+            reachedBottom = 0;
             minimax(state);
             depth += (int)Math.pow(2, ++iteration);
         }
@@ -89,6 +90,8 @@ public class C4AI extends AIModule {
                     lastChosen = chosenMove = col;
                 }
                 state.unMakeMove();
+            } else {
+                reachedBottom++;
             }
         }
         rollback = lastChosen;
@@ -96,9 +99,7 @@ public class C4AI extends AIModule {
 
     private int value(final GameState_Opt7x6 state, final int curDepth, int alpha, int beta) {
         if (state.isGameOver()) {
-            if (state.getCoins() >= 42) {
-                atBottomOfTree = true;
-            }
+            reachedBottom++;
             if (state.getWinner() - 1 == bot) {
                 return 1000 - curDepth;
             } else if (state.getWinner() == 0) {
