@@ -5,11 +5,8 @@ import java.lang.Math;
 import java.util.HashMap;
 
 public class C4AI extends AIModule {
-    private final static int WIDTH = 7;
-    private final static int HEIGHT = 6;
-    private final static int H1 = HEIGHT + 1;
-    // 0 if p1, 1 is p2
     private int bot;
+    // 0 if p1, 1 is p2
     private int lastChosen;
     private int rollback;
     private int depth;
@@ -53,21 +50,16 @@ public class C4AI extends AIModule {
         double iteration = 0;
         boardCache.clear();
         atBottomOfTree = false;
-        depth = 5;
-        presetMove(state);
+        depth = 9;
+        chosenMove = -1;
         while (!terminate && !atBottomOfTree) {
             minimax(state);
             depth += (int)Math.pow(2, ++iteration);
         }
-    }
 
-    // take a movable move to prevent forfait
-    private void presetMove(final GameState_Opt7x6 state) {
-        for (int i = 0; i < 7; i++) {
-            if (state.canMakeMove(priorityOrdering[i])) {
-                rollback = chosenMove = priorityOrdering[i];
-                return;
-            }
+        if (chosenMove == -1) {
+            System.out.println("Unable to cover at least 9 levels.. Please increase AItime..");
+            System.exit(-1);
         }
     }
 
@@ -626,3 +618,4 @@ public class C4AI extends AIModule {
         return Long.numberOfTrailingZeros((columnFilter << (col * 7)) & map);
     }
 }
+
