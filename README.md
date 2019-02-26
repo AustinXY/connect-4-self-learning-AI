@@ -5,7 +5,7 @@ There are four connect four AIs you can play with. StupidAI, RandomAI, MonteCarl
 * `javac *.java`<br />
 Compile.
 * `java Main -t 2000 -p1 MonteCarloAI -p2 C4AI -d`<br />
-Specify player1 and player2. Any missing player will be filled in with human player. When using C4AI, have to specify a csv file containing the weights of parameters, or use `-d` for default config used in training. `-t` can be used to set AItime, which is the time limit (in ms) for the AI to compute a move. The default of AItime is 1000ms.
+Specify player1 and player2. Any missing player will be filled in with human player. When using C4AI, have to specify a csv file containing the weights of parameters, or use `-d` for default config used in training. `-t` can be used to set AItime, which is the time limit (in ms) for the AI to compute a move. The default of AItime is 500ms.
 * `java Main -train`<br />
 Train C4AI.
 
