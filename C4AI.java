@@ -10,10 +10,9 @@ public class C4AI extends AIModule {
     private int lastChosen;
     private int rollback;
     private int depth;
-    private int reachedBottom;
+    private int deepestReachedLevel;
     private final static long TOP = 0x1020408102040L;
     // terminate if reached bottom of tree
-    private boolean atBottomOfTree;
     private HashMap<String, Integer> boardCache = new HashMap<String, Integer>();
     private HashMap<String, Integer> threatSimulationCache = new HashMap<String, Integer>();
     private long[] curThreatMap = new long[2];
@@ -52,10 +51,13 @@ public class C4AI extends AIModule {
         boardCache.clear();
         depth = 9;
         chosenMove = -1;
-        while (!terminate && !(reachedBottom == 6)) {
-            reachedBottom = 0;
+        deepestReachedLevel = 0;
+        while (!terminate) {
             minimax(state);
             depth += (int)Math.pow(2, ++iteration);
+            if (deepestReachedLevel < depth) {
+                break;
+            }
         }
 
         if (chosenMove == -1) {
@@ -90,16 +92,17 @@ public class C4AI extends AIModule {
                     lastChosen = chosenMove = col;
                 }
                 state.unMakeMove();
-            } else {
-                reachedBottom++;
             }
         }
         rollback = lastChosen;
     }
 
     private int value(final GameState_Opt7x6 state, final int curDepth, int alpha, int beta) {
+        if (deepestReachedLevel < curDepth) {
+            deepestReachedLevel = curDepth;
+        }
+
         if (state.isGameOver()) {
-            reachedBottom++;
             if (state.getWinner() - 1 == bot) {
                 return 1000 - curDepth;
             } else if (state.getWinner() == 0) {
