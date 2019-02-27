@@ -184,7 +184,7 @@ public class Main
                     break;
                 } else if (game.getWinner() == 0 && i == 0) {
                     draw = true;
-                } else if (draw == true && game.getWinner() == 0) {
+                } else if (draw && game.getWinner() == 0) {
                     keep = true;
                 }
             }
