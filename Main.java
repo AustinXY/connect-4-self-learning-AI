@@ -31,6 +31,10 @@ public class Main
                 if (args[i].equalsIgnoreCase("-train")) {
                     train = true;
                     break;
+                } else if (args[i].equalsIgnoreCase("-train-new")) {
+                    train = true;
+                    newborn = true;
+                    break;
                 }
 
                 if (args[i].equalsIgnoreCase("-p1")) {
@@ -157,8 +161,8 @@ public class Main
                         temp = 1000;
                     }
                     if (temp < -1000) {
-                    }
                         temp = -1000;
+                    }
                     weight[i] = Integer.toString(temp);
                     br.close();
                 }
