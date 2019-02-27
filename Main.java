@@ -19,6 +19,7 @@ public class Main
         boolean train = false;
         boolean keep; // whether to keep parent config
         boolean draw;
+        boolean newborn = false;
 
         String filename, path = "/Users/austin/Desktop/c4_self_learning/";
         String parentFilename = "Primaryconfig.csv";
@@ -107,7 +108,7 @@ public class Main
         FileWriter outf;
         String weight[] = new String[6];
         while (true) {
-            if (unbeatenRun >= 100 || losingstreak >= 10) {
+            if (unbeatenRun >= 100 || losingstreak >= 30) {
                 if (unbeatenRun >= 100) {
                     unbeatenRun = 0;
                     filename = "archivedconfig" + Integer.toString(++filenum) + ".csv";
@@ -136,7 +137,8 @@ public class Main
                     System.err.println("file write error");
                     System.exit(-1);
                 }
-            } // if 100 gen unbeaten or 10 gen losing
+                newborn = true;
+            } // if 100 gen unbeaten or 30 gen losing
 
             try {
                 inf = new FileReader(parentFilename);
@@ -144,10 +146,18 @@ public class Main
                 String line = br.readLine();
                 StringTokenizer st = new StringTokenizer(line, ",");
                 for (int i = 0; i < numparameters; i++) {
-                    temp = Integer.parseInt(st.nextToken()) + ThreadLocalRandom.current().nextInt(-5 * (unbeatenRun+1), 5 * (unbeatenRun+1) + 1);
-                    if (temp > 1000)
+                    if (!newborn) {
+                        temp = Integer.parseInt(st.nextToken()) + ThreadLocalRandom.current()
+                                .nextInt(-5 * (unbeatenRun + 1), 5 * (unbeatenRun + 1) + 1);
+                    } else {
+                        temp = Integer.parseInt(st.nextToken()) + ThreadLocalRandom.current()
+                                .nextInt(-200, 201);
+                    }
+                    if (temp > 1000) {
                         temp = 1000;
-                    if (temp < -1000)
+                    }
+                    if (temp < -1000) {
+                    }
                         temp = -1000;
                     weight[i] = Integer.toString(temp);
                     br.close();
@@ -184,7 +194,7 @@ public class Main
                     break;
                 } else if (game.getWinner() == 0 && i == 0) {
                     draw = true;
-                } else if (draw && game.getWinner() == 0) {
+                } else if (draw == true && game.getWinner() == 0) {
                     keep = true;
                 }
             }
@@ -231,6 +241,10 @@ public class Main
                 System.out.println("Keeping...");
                 System.out.print("Unbeaten run: ");
                 System.out.println(unbeatenRun);
+            }
+
+            if (unbeatenRun >= 15) {
+                newborn = false;
             }
         }
     }
