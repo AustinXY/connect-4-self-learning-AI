@@ -107,7 +107,7 @@ public class Main
         FileWriter outf;
         String weight[] = new String[6];
         while (true) {
-            if (unbeatenRun >= 100 || losingstreak >= 50) {
+            if (unbeatenRun >= 100 || losingstreak >= 10) {
                 if (unbeatenRun >= 100) {
                     unbeatenRun = 0;
                     filename = "archivedconfig" + Integer.toString(++filenum) + ".csv";
@@ -186,7 +186,7 @@ public class Main
                     draw = true;
                 }
 
-                if (i == 1 && draw == true) {
+                if (i == 1 && draw == true && game.getWinner() == 0) {
                     keep = true;
                 }
             }
