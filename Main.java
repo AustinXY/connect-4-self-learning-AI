@@ -182,11 +182,9 @@ public class Main
                 if (game.getWinner() != 0 && game.getWinner() == i+1) {
                     keep = true;
                     break;
-                } else if (i == 0 && game.getWinner() == 0) {
+                } else if (game.getWinner() == 0 && i == 0) {
                     draw = true;
-                }
-
-                if (i == 1 && draw == true && game.getWinner() == 0) {
+                } else if (draw == true && game.getWinner() == 0) {
                     keep = true;
                 }
             }
