@@ -155,7 +155,7 @@ public class Main
                                 .nextInt(-5 * (unbeatenRun + 1), 5 * (unbeatenRun + 1) + 1);
                     } else {
                         temp = Integer.parseInt(st.nextToken()) + ThreadLocalRandom.current()
-                                .nextInt(-200, 201);
+                                .nextInt(-500, 501);
                     }
                     if (temp > 1000) {
                         temp = 1000;
@@ -247,7 +247,7 @@ public class Main
                 System.out.println(unbeatenRun);
             }
 
-            if (unbeatenRun >= 15) {
+            if (unbeatenRun >= 20) {
                 newborn = false;
             }
         }
