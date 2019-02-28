@@ -1,15 +1,13 @@
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.StringTokenizer;
 import java.io.*;
-import java.nio.file.Files;
-import java.nio.file.StandardCopyOption;
 import javax.swing.*;
 
 public class Main
 {
     public static void main(String[] args)
     {
-        int temp, losingstreak = 0, unbeatenRun = 0, filenum = 0;
+        int temp, unbeatenRun = 0;
         int numparameters = 6;
         AIModule[] players = new AIModule[2];
         GameController controller;
@@ -19,9 +17,12 @@ public class Main
         boolean train = false;
         boolean keep; // whether to keep parent config
         boolean draw;
-        boolean newborn = false;
+        boolean badConfig = false;
+        boolean test = true;
+        boolean ptune = false; // tune single weight
+        int pindex = 0;
+        int tempw = -1000;
 
-        String filename, path = "/Users/austin/Desktop/c4_self_learning/";
         String parentFilename = "Primaryconfig.csv";
         String mutationFilename = "Mutateconfig.csv";
 
@@ -31,9 +32,9 @@ public class Main
                 if (args[i].equalsIgnoreCase("-train")) {
                     train = true;
                     break;
-                } else if (args[i].equalsIgnoreCase("-train-new")) {
+                } else if (args[i].equalsIgnoreCase("-train-test")) {
                     train = true;
-                    newborn = true;
+                    test = true;
                     break;
                 }
 
@@ -112,60 +113,68 @@ public class Main
         FileWriter outf;
         String weight[] = new String[6];
         while (true) {
-            if (unbeatenRun >= 100 || losingstreak >= 30) {
-                if (unbeatenRun >= 100) {
-                    unbeatenRun = 0;
-                    filename = "archivedconfig" + Integer.toString(++filenum) + ".csv";
-                    try {
-                        Files.copy(new File(path + parentFilename).toPath(),
-                            new File(path + filename).toPath(), StandardCopyOption.REPLACE_EXISTING);
-                    } catch (IOException ioe) {
-                        System.err.println("error copy file");
-                        System.exit(-1);
+            if (test) {
+                for (int i = 0; i < 20; i++) {
+                    players[0] = new MonteCarloAI();
+                    players[1] = new C4AI(parentFilename, 1);
+                    game = new GameState_Opt7x6();
+                    io = new TextDisplay();
+                    controller = new GameController(game, io, players, AI_time);
+                    controller.play();
+                    if (game.getWinner() == 1) {
+                        badConfig = true;
+                        break;
                     }
-
-                    for (int i = 0; i < numparameters; i++) {
-                        weight[i] = Integer.toString(ThreadLocalRandom.current().nextInt(-1000, 1000));
-                    }
-                } else {
-                    losingstreak = 0;
                 }
+            }
 
-                try {
-                    outf = new FileWriter(parentFilename);
-                    BufferedWriter writer = new BufferedWriter(outf);
-                    writer.write(String.join(",", weight));
-                    writer.close();
-                    outf.close();
-                } catch (IOException ee) {
-                    System.err.println("file write error");
-                    System.exit(-1);
-                }
-                newborn = true;
-            } // if 100 gen unbeaten or 30 gen losing
+            if (unbeatenRun >= 50) {
+                ptune = true;
+                unbeatenRun = 0;
+            } // if 60 gen unbeaten
 
             try {
                 inf = new FileReader(parentFilename);
                 BufferedReader br = new BufferedReader(inf);
                 String line = br.readLine();
                 StringTokenizer st = new StringTokenizer(line, ",");
-                for (int i = 0; i < numparameters; i++) {
-                    if (!newborn) {
-                        temp = Integer.parseInt(st.nextToken()) + ThreadLocalRandom.current()
-                                .nextInt(-5 * (unbeatenRun + 1), 5 * (unbeatenRun + 1) + 1);
-                    } else {
-                        temp = Integer.parseInt(st.nextToken()) + ThreadLocalRandom.current()
-                                .nextInt(-500, 501);
+                if (ptune) {
+                    for (int i = 0; i < numparameters; i++) {
+                        if (i == pindex) {
+                            temp = tempw;
+                        } else {
+                            temp = Integer.parseInt(st.nextToken());
+                        }
+
+                        weight[i] = Integer.toString(temp);
                     }
-                    if (temp > 1000) {
-                        temp = 1000;
+                    tempw += 200;
+                    if (tempw >= 1000) {
+                        tempw = -1000;
+                        if (++pindex >= numparameters) {
+                            pindex = 0;
+                            ptune = false;
+                            unbeatenRun = 0;
+                        }
                     }
-                    if (temp < -1000) {
-                        temp = -1000;
+                } else {
+                    for (int i = 0; i < numparameters; i++) {
+                        if (badConfig) {
+                            temp = Integer.parseInt(st.nextToken()) + ThreadLocalRandom.current().nextInt(-500, 501);
+                        } else {
+                            temp = Integer.parseInt(st.nextToken()) + ThreadLocalRandom.current()
+                                    .nextInt(-10 * (unbeatenRun + 1), 10 * (unbeatenRun + 1) + 1);
+                        }
+                        if (temp > 1000) {
+                            temp = 1000;
+                        }
+                        if (temp < -1000) {
+                            temp = -1000;
+                        }
+                        weight[i] = Integer.toString(temp);
                     }
-                    weight[i] = Integer.toString(temp);
-                    br.close();
                 }
+                br.close();
             } catch (FileNotFoundException e1) {
                 System.err.println("file read error");
                 System.exit(-1);
@@ -193,7 +202,7 @@ public class Main
                 io = new TextDisplay();
                 controller = new GameController(game, io, players, AI_time);
                 controller.play();
-                if (game.getWinner() != 0 && game.getWinner() == i+1) {
+                if (game.getWinner() == i+1) {
                     keep = true;
                     break;
                 } else if (game.getWinner() == 0 && i == 0) {
@@ -207,7 +216,6 @@ public class Main
             System.out.println("**************************************************");
             if (!keep) {
                 unbeatenRun = 0;
-                losingstreak++;
                 try {
                     inf = new FileReader(mutationFilename);
                     BufferedReader br = new BufferedReader(inf);
@@ -235,20 +243,15 @@ public class Main
                     System.err.println("file write error");
                     System.exit(-1);
                 }
-                if (losingstreak >= 2) {
-                    System.out.print("Losing streak: ");
-                    System.out.println(losingstreak);
-                }
             } else {
                 unbeatenRun++;
-                losingstreak = 0;
                 System.out.println("Keeping...");
                 System.out.print("Unbeaten run: ");
                 System.out.println(unbeatenRun);
             }
 
             if (unbeatenRun >= 20) {
-                newborn = false;
+                badConfig = false;
             }
         }
     }
