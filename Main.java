@@ -155,7 +155,7 @@ public class Main
 
                         weight[i] = Integer.toString(temp);
                     }
-                    tempw += 100;
+                    tempw += (int)Math.pow(3, (double)(unbeatenRun + 1));
                     if (tempw >= 1000) {
                         tempw = -1000;
                         if (++pindex >= numparameters) {
@@ -257,7 +257,8 @@ public class Main
                 System.out.println(unbeatenRun);
             }
 
-            if (unbeatenRun >= 20) {
+            if (badConfig && unbeatenRun >= 13) {
+                unbeatenRun = 0;
                 badConfig = false;
                 test = true;
             }
