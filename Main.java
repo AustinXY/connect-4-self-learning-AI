@@ -114,7 +114,9 @@ public class Main
         String weight[] = new String[6];
         while (true) {
             if (test) {
+                System.out.println("testing against MonteCarloAI");
                 for (int i = 0; i < 20; i++) {
+                    System.out.println("game" + Integer.toString(i) + ":");
                     players[0] = new MonteCarloAI();
                     players[1] = new C4AI(parentFilename, 1);
                     game = new GameState_Opt7x6();
@@ -122,10 +124,12 @@ public class Main
                     controller = new GameController(game, io, players, AI_time);
                     controller.play();
                     if (game.getWinner() == 1) {
+                        System.out.println("test failed...");
                         badConfig = true;
                         break;
                     }
                 }
+                System.out.println("test passed...");
             }
 
             if (unbeatenRun >= 50) {
@@ -139,6 +143,7 @@ public class Main
                 String line = br.readLine();
                 StringTokenizer st = new StringTokenizer(line, ",");
                 if (ptune) {
+                    System.out.println("tuning weight #" + Integer.toString(pindex));
                     for (int i = 0; i < numparameters; i++) {
                         if (i == pindex) {
                             temp = tempw;
@@ -252,6 +257,7 @@ public class Main
 
             if (unbeatenRun >= 20) {
                 badConfig = false;
+                test = true;
             }
         }
     }
