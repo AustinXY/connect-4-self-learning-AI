@@ -7,8 +7,8 @@ public class Main
 {
     public static void main(String[] args)
     {
+        final int numparameters = 6;
         int temp, unbeatenRun = 0;
-        int numparameters = 6;
         AIModule[] players = new AIModule[2];
         GameController controller;
         int AI_time = 1000;
