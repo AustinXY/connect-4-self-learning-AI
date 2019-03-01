@@ -156,6 +156,11 @@ public class Main
                         weight[i] = Integer.toString(temp);
                     }
                     tempw += (int)Math.pow(3, (double)(unbeatenRun + 1));
+
+                    if (unbeatenRun >= 5) {
+                        unbeatenRun = 0;
+                    }
+
                     if (tempw >= 1000) {
                         tempw = -1000;
                         if (++pindex >= numparameters) {
