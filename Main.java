@@ -148,7 +148,7 @@ public class Main
 
                         weight[i] = Integer.toString(temp);
                     }
-                    tempw += 200;
+                    tempw += 100;
                     if (tempw >= 1000) {
                         tempw = -1000;
                         if (++pindex >= numparameters) {
