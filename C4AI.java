@@ -186,7 +186,8 @@ public class C4AI extends AIModule {
         int atari = 0, num1 = 0, num2 = 0;
         long oneBit, temp, tempFilter;
         long board = state.color[0] | state.color[1] | TOP;
-        long botThreats = 0, oppoThreats = 0;
+        long botThreats = 0L, oppoThreats = 0L;
+        long tempAtari = 0L;
 
         if (terminate) {
             return -1000;
@@ -207,6 +208,7 @@ public class C4AI extends AIModule {
                         oneBit = tempFilter ^ temp;
                         if (oneBit == 1L || ((oneBit >> 1) & board) != 0) {
                             atari++;
+                            tempAtari = oneBit;
                         } else {
                             botThreats |= oneBit;
                         }
@@ -270,7 +272,16 @@ public class C4AI extends AIModule {
                         boardCache.put(constructKey(state.color), 1000 - curDepth);
                         return 1000 - curDepth;
                     case 3:
-                        atari++;
+                        if (tempAtari != 0L) {
+                            if (tempAtari != (tempFilter ^ temp)) {
+                                boardCache.put(constructKey(state.color), 1000 - curDepth);
+                                return 1000 - curDepth;
+                            } // not same atari
+                        } // have previous atari
+                        else {
+                            tempAtari = tempFilter ^ temp;
+                            atari++;
+                        } // don't have previous atari
                         break;
                     case 2:
                         num2++;
@@ -326,7 +337,14 @@ public class C4AI extends AIModule {
                         // check whether is atari
                         oneBit = tempFilter ^ temp;
                         if (oneBit == 1L || ((oneBit >> 1) & board) != 0) {
-                            atari++;
+                            if (tempAtari != 0L) {
+                                boardCache.put(constructKey(state.color), 1000 - curDepth);
+                                return 1000 - curDepth;
+                            } // have previous atari
+                            else {
+                                tempAtari = oneBit;
+                                atari++;
+                            } // don't have previous atari
                         } else {
                             botThreats |= oneBit;
                         }
@@ -392,11 +410,19 @@ public class C4AI extends AIModule {
                         // check whether is atari
                         oneBit = tempFilter ^ temp;
                         if (((oneBit >> 1) & board) != 0) {
-                            atari++;
+                            if (tempAtari != 0L) {
+                                if (tempAtari != oneBit) {
+                                    boardCache.put(constructKey(state.color), 1000 - curDepth);
+                                    return 1000 - curDepth;
+                                } // not same atari
+                            } // have previous atari
+                            else {
+                                tempAtari = oneBit;
+                                atari++;
+                            } // don't have previous atari
                         } else {
                             botThreats |= oneBit;
                         }
-
                         break;
                     case 2:
                         num2++;
@@ -443,11 +469,6 @@ public class C4AI extends AIModule {
                 }
                 tempFilter <<= 7;
             }
-        }
-
-        if (atari > 1) {
-            boardCache.put(constructKey(state.color), 1000 - curDepth);
-            return 1000 - curDepth;
         }
 
         int v = weight[0] * num1 + weight[1] * num2 + weight[2] * atari;
