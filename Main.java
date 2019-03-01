@@ -18,7 +18,7 @@ public class Main
         boolean keep; // whether to keep parent config
         boolean draw;
         boolean badConfig = false;
-        boolean test = true;
+        boolean test = false;
         boolean ptune = false; // tune single weight
         int pindex = 0;
         int tempw = -1000;

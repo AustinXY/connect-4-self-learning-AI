@@ -8,8 +8,8 @@ Compile.
 Specify player1 and player2. Any missing player will be filled in with human player. When using C4AI, have to specify a csv file containing the weights of parameters, or use `-d` for default config used in training. `-t` can be used to set AItime, which is the time limit (in ms) for the AI to compute a move. The default of AItime is 1000ms.
 * `java Main -train`<br />
 Train C4AI.
-* `java Main -train-bad`<br />
-Train C4AI with badconfig option on (generate more distant mutations until the bad config becomes a bit more stabilized).
+* `java Main -train-test`<br />
+Train C4AI with test config option on (test whether the current config is ok to go into learning process. Compete against MonteCarloAI).
 
 ## Implementation
 ### General
