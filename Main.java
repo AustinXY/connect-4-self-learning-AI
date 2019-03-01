@@ -160,7 +160,7 @@ public class Main
                 } else {
                     for (int i = 0; i < numparameters; i++) {
                         if (badConfig) {
-                            temp = Integer.parseInt(st.nextToken()) + ThreadLocalRandom.current().nextInt(-500, 501);
+                            temp = Integer.parseInt(st.nextToken()) + ThreadLocalRandom.current().nextInt(-1000, 1001);
                         } else {
                             temp = Integer.parseInt(st.nextToken()) + ThreadLocalRandom.current()
                                     .nextInt(-10 * (unbeatenRun + 1), 10 * (unbeatenRun + 1) + 1);
@@ -250,8 +250,13 @@ public class Main
                 System.out.println(unbeatenRun);
             }
 
+<<<<<<< HEAD
             if (unbeatenRun >= 20) {
                 badConfig = false;
+=======
+            if (unbeatenRun >= 30) {
+                newborn = false;
+>>>>>>> 1da679c6d052a830bf195bb784e9541d626b6c50
             }
         }
     }
