@@ -19,7 +19,7 @@ public class Main
         boolean draw;
         boolean badConfig = false;
         boolean test = false;
-        boolean ptune = false; // tune single weight
+        boolean ptune = true; // tune single weight
         int pindex = 0;
         int tempw = -1000;
 
@@ -250,13 +250,8 @@ public class Main
                 System.out.println(unbeatenRun);
             }
 
-<<<<<<< HEAD
             if (unbeatenRun >= 20) {
                 badConfig = false;
-=======
-            if (unbeatenRun >= 30) {
-                newborn = false;
->>>>>>> 1da679c6d052a830bf195bb784e9541d626b6c50
             }
         }
     }
