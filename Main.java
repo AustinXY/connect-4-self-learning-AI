@@ -115,7 +115,7 @@ public class Main
         while (true) {
             if (test) {
                 System.out.println("testing against MonteCarloAI");
-                for (int i = 0; i < 20; i++) {
+                for (int i = 0; i < 7; i++) {
                     System.out.println("**************************************************");
                     System.out.println("game " + Integer.toString(i) + " :");
                     players[0] = new MonteCarloAI();
@@ -131,6 +131,7 @@ public class Main
                     }
                 }
                 System.out.println("test passed...");
+                test = false;
             }
 
             if (unbeatenRun >= 50) {
