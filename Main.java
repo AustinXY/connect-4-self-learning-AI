@@ -116,7 +116,8 @@ public class Main
             if (test) {
                 System.out.println("testing against MonteCarloAI");
                 for (int i = 0; i < 20; i++) {
-                    System.out.println("game" + Integer.toString(i) + ":");
+                    System.out.println("**************************************************");
+                    System.out.println("game " + Integer.toString(i) + " :");
                     players[0] = new MonteCarloAI();
                     players[1] = new C4AI(parentFilename, 1);
                     game = new GameState_Opt7x6();
