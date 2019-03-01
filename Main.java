@@ -155,9 +155,9 @@ public class Main
 
                         weight[i] = Integer.toString(temp);
                     }
-                    tempw += (int)Math.pow(3, (double)(unbeatenRun + 1));
+                    tempw += (int)Math.pow(8, (double)unbeatenRun);
 
-                    if (unbeatenRun >= 5) {
+                    if (unbeatenRun >= 3) {
                         unbeatenRun = 0;
                     }
 
