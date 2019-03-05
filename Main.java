@@ -19,7 +19,7 @@ public class Main
         boolean draw;
         boolean badConfig = false;
         boolean test = false;
-        boolean ptune = true; // tune single weight
+        boolean ptune = false; // tune single weight
         int pindex = 0;
         int tempw = -1000;
 
